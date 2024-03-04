@@ -9,6 +9,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Map data = {};
   int score = 0; // Variable to store the score
 
   // Function to handle the selection of an option
@@ -40,62 +41,69 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: (){
+              Navigator.pushNamed(context, '/add_question');
+            },
+            icon: Icon(Icons.add),
+            tooltip: "Add Question",
+          )
+        ],
         centerTitle: true,
         title: Text("Flashcard Quiz"),
         backgroundColor: Colors.amber,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.amber,
-            width: 5,
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.amber,
+              width: 5,
+            ),
+            color: Colors.black,
+            borderRadius: BorderRadius.all(Radius.zero),
           ),
-          color: Colors.black,
-          borderRadius: BorderRadius.all(Radius.zero),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-          child: Column(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    width: 320,
-                    height: 200,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.amber.shade100,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      "In what year Pakistan became an independent state?",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  width: 320,
+                  height: 200,
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.shade100,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  SizedBox(height: 50),
-                  // ListView for answer options
-                  Column(
-                    children: [
-                      buildOption("1947"),
-                      SizedBox(height: 20),
-                      buildOption("1965"),
-                      SizedBox(height: 20),
-                      buildOption("1971"),
-                      SizedBox(height: 20),
-                      buildOption("Not Yet"),
-                    ],
+                  child: Text(
+                    "In what year Pakistan became an independent state?",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ],
-              ),
-            ],
+                ),
+                SizedBox(height: 50),
+                // ListView for answer options
+                Column(
+                  children: [
+                    buildOption("1947"),
+                    SizedBox(height: 20),
+                    buildOption("1965"),
+                    SizedBox(height: 20),
+                    buildOption("1971"),
+                    SizedBox(height: 20),
+                    buildOption("Not Yet"),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
