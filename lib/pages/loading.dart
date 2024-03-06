@@ -1,7 +1,9 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:cool_alert/cool_alert.dart';
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flashcard/firebase_options.dart';
 import 'package:flutter/material.dart';
-import 'package:flashcard/services/world_time.dart';
+import 'package:flashcard/controller/dependency_injection.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatefulWidget {
@@ -13,38 +15,20 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
+  void setupHomePage() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    DependencyInjection.init();
+    await Future.delayed(Duration(seconds: 2));
 
-  void setupWorldTime() async {
-    ConnectivityResult connectivityResult = await Connectivity().checkConnectivity();
-
-    if (connectivityResult == ConnectivityResult.none) {
-      CoolAlert.show(
-        context: context,
-        type: CoolAlertType.error,
-        text: "An error occurred during data retrieval!",
-        onConfirmBtnTap: (){
-          setupWorldTime();
-        },
-      );
-      // Use setState to trigger a rebuild
-    } else {
-      WorldTime instance = WorldTime(location: 'Karachi', flagURL: 'pakistan.png', urlEndPoint: 'Asia/Karachi');
-      await instance.getTime();
-
-      print(instance);
-      Navigator.pushReplacementNamed(context,'/home',arguments: {
-        'location': instance.location,
-        'flagURL': instance.flagURL,
-        'time': instance.time,
-        'hours': instance.hours,
-      });
+    print("MOVED FORWARD");
+    Navigator.pushReplacementNamed(context,'/home');
     }
-  }
 
   @override
   void initState() {
     super.initState();
-    setupWorldTime();
+    setupHomePage();
     }
 
   @override
